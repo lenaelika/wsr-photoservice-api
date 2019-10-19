@@ -10,21 +10,24 @@ $config = [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
+        '@upload' => '@app/../photos', // xxx-m2/photos
     ],
     'components' => [
         'request' => [
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
+            'baseUrl' => '/api',
+            'parsers' => [
+                'application/json' => yii\web\JsonParser::class, 
+            ],
             'cookieValidationKey' => 'ALJKtzZN3ZNYRZaW2nzrhg4dlXYlnRc2',
+            'enableCsrfValidation' => false,
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
             'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
-        ],
-        'errorHandler' => [
-            'errorAction' => 'site/error',
+            'enableAutoLogin' => false,
+            'enableSession' => false,
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
@@ -41,16 +44,50 @@ $config = [
                     'levels' => ['error', 'warning'],
                 ],
             ],
+            // 'targets' => [
+            //     [
+            //         'class' => 'yii\log\FileTarget',
+            //         'categories' => [
+            //             'yii\db\*',
+            //         ],
+            //         'levels' => ['profile'],
+            //         'logFile' => '@runtime/logs/queries.txt',
+            //     ],
+            // ],
         ],
         'db' => $db,
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
+            'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'photo',
+                    'pluralize' => false,
+                    'patterns' => [
+                        'POST' => 'create',
+                        'POST {id}' => 'patch',
+                        'PATCH {id}' => 'update',
+                        'GET' => 'index',
+                        'GET {id}' => 'view',
+                        'DELETE {id}' => 'delete',
+                    ],
+                ], [
+                    'pattern' => 'user/<id>/share',
+                    'route' => 'user/share',
+                    'verb' => 'POST'
+                ], [
+                    'pattern' => 'user',
+                    'route' => 'user/search',
+                    'verb' => 'GET',
+                ], [
+                    'pattern' => '<action:(signup|login|logout)>',
+                    'route' => 'user/<action>',
+                    'verb' => 'POST',
+                ],
             ],
         ],
-        */
     ],
     'params' => $params,
 ];
