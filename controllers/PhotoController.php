@@ -20,15 +20,6 @@ class PhotoController extends BaseController
             'authenticator' => [
                 'class' => \app\filters\BearerAuth::className(),
             ],
-            'access' => [
-                'class' => \yii\filters\AccessControl::className(),
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
         ]);
     }
 

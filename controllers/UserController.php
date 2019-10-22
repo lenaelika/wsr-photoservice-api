@@ -21,18 +21,6 @@ class UserController extends BaseController
                 'class' => \app\filters\BearerAuth::className(),
                 'except' => ['signup', 'login'],
             ],
-            'access' => [
-                'class' => \yii\filters\AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['signup', 'login'],
-                        'allow' => true,
-                    ], [
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
         ]);
     }
 
